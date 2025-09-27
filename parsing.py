@@ -255,4 +255,4 @@ if not reservation["time"]:
         if not time_found:
             reservation["time"] = time_input.strip()
 
-print(json.dumps(reservation, indent=2))
+print(f"{reservation['name']} your appointment has been made for {reservation['date']} at {reservation['time']}.")
