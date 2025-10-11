@@ -37,47 +37,41 @@ class ReservationChatbot {
             // Calendar sizing and performance
             height: '100%',
             contentHeight: 'auto',
-            aspectRatio: 1.8,
+            aspectRatio: 1.5,
             handleWindowResize: true,
             windowResizeDelay: 50,
             
             // Enhanced calendar settings
             dayMaxEvents: true,
-            dayMaxEventRows: 8,
+            dayMaxEventRows: 6, // Increased to show more events
             views: {
                 dayGridMonth: {
-                    dayMaxEvents: 8,
-                    dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' },
-                    fixedWeekCount: false,
-                    dayMinHeight: 70
+                    dayMaxEvents: 6, // Show more events in month view
+                    dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' }
                 },
                 timeGridWeek: {
-                    slotMinTime: '00:00:00',
-                    slotMaxTime: '24:00:00',
-                    slotDuration: '00:15:00',
+                    slotMinTime: '08:00:00',
+                    slotMaxTime: '18:00:00',
+                    slotDuration: '00:15:00', // 15-minute slots to see precise times
                     slotLabelFormat: {
                         hour: '2-digit',
                         minute: '2-digit',
-                        hour12: false
+                        hour12: true
                     },
                     allDaySlot: false,
-                    slotEventOverlap: false,
-                    scrollTime: '00:00:00',
-                    slotLabelInterval: '01:00:00'
+                    slotEventOverlap: false
                 },
                 timeGridDay: {
-                    slotMinTime: '00:00:00',
-                    slotMaxTime: '24:00:00',
-                    slotDuration: '00:15:00',
+                    slotMinTime: '08:00:00',
+                    slotMaxTime: '18:00:00',
+                    slotDuration: '00:15:00', // 15-minute slots
                     slotLabelFormat: {
                         hour: '2-digit',
                         minute: '2-digit',
-                        hour12: false
+                        hour12: true
                     },
                     allDaySlot: false,
-                    slotEventOverlap: false,
-                    scrollTime: '00:00:00',
-                    slotLabelInterval: '01:00:00'
+                    slotEventOverlap: false
                 }
             },
             
@@ -88,7 +82,7 @@ class ReservationChatbot {
                 info.el.style.backgroundImage = '';
                 
                 // Add consistent styling
-                info.el.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.3)';
+                info.el.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
                 info.el.style.transition = 'all 0.3s ease';
                 
                 // Ensure text is readable
@@ -97,8 +91,8 @@ class ReservationChatbot {
                     eventTitle.style.color = 'white';
                     eventTitle.style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.5)';
                     eventTitle.style.fontWeight = '600';
-                    eventTitle.style.fontSize = '0.7rem';
-                    eventTitle.style.lineHeight = '1.1';
+                    eventTitle.style.fontSize = '0.75rem';
+                    eventTitle.style.lineHeight = '1.2';
                 }
 
                 // Add time display for events
@@ -106,7 +100,6 @@ class ReservationChatbot {
                 if (eventTime) {
                     eventTime.style.fontWeight = '600';
                     eventTime.style.opacity = '0.9';
-                    eventTime.style.fontSize = '0.65rem';
                 }
                 
                 // Add tooltip with full event details
@@ -144,33 +137,14 @@ class ReservationChatbot {
         // Ensure proper sizing after render
         setTimeout(() => {
             this.calendar.updateSize();
-            this.initializeCalendarScroll();
         }, 100);
         
         // Also update on window resize
         window.addEventListener('resize', () => {
             setTimeout(() => {
                 this.calendar.updateSize();
-                this.initializeCalendarScroll();
             }, 50);
         });
-    }
-
-    initializeCalendarScroll() {
-        // Initialize scroll position for timeGrid views
-        const currentView = this.calendar.view;
-        if (currentView.type === 'timeGridWeek' || currentView.type === 'timeGridDay') {
-            // Scroll to 9 AM by default
-            const scrollEl = document.querySelector('.fc-timegrid-body .fc-scroller');
-            if (scrollEl) {
-                // Calculate scroll position for 9 AM
-                const nineAmPosition = 9 * 60; // 9 AM in minutes from midnight
-                const slotHeight = 35; // Height of each time slot in pixels
-                const scrollPosition = (nineAmPosition / 15) * (slotHeight / 4);
-                
-                scrollEl.scrollTop = scrollPosition;
-            }
-        }
     }
 
     formatEventTime(event) {
