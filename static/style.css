@@ -1,0 +1,815 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #10b981;
+    --accent: #f59e0b;
+    --dark-bg: #0f172a;
+    --dark-surface: #1e293b;
+    --dark-card: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border: #475569;
+    --user-msg: #3b82f6;
+    --bot-msg: #475569;
+    --event-color-1: #10b981;
+    --event-color-2: #f59e0b;
+    --event-color-3: #ef4444;
+    --event-color-4: #8b5cf6;
+    --event-color-5: #06b6d4;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--dark-bg) 0%, #1e1b4b 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    gap: 2px;
+    background: var(--border);
+    overflow: hidden;
+}
+
+/* Calendar Section - 70% width */
+.calendar-section {
+    flex: 7;
+    background: var(--dark-surface);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100vh;
+    overflow: hidden;
+    margin-right: 1px;
+}
+
+/* Chatbot Section - 30% width */
+.chatbot-section {
+    flex: 3;
+    background: var(--dark-surface);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-left: 1px solid var(--border);
+    margin-left: 1px;
+}
+
+.section-header {
+    background: var(--dark-card);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.section-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-header i {
+    color: var(--primary);
+}
+
+/* Calendar Styles - Compact */
+#calendar {
+    flex: 1;
+    padding: 0 1rem 0.5rem 1rem;
+    background: var(--dark-surface);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Enhanced FullCalendar Dark Theme - Compact */
+.fc {
+    background: var(--dark-surface) !important;
+    border-radius: 8px;
+    padding: 0.5rem !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.fc .fc-toolbar {
+    background: var(--dark-card);
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+    margin-bottom: 0.25rem !important;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+    min-height: auto !important;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--text-primary);
+    font-size: 1.1rem !important;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.fc .fc-toolbar-chunk {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem !important;
+}
+
+.fc .fc-button-group {
+    gap: 0.25rem !important;
+}
+
+.fc .fc-button {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 0 !important;
+}
+
+.fc .fc-button:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #4338ca) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.fc .fc-button:active {
+    transform: translateY(0);
+}
+
+/* Calendar View Container with Scroll */
+.fc .fc-view-harness {
+    flex: 1;
+    min-height: 0 !important;
+    background: var(--dark-surface) !important;
+    overflow: auto !important;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-top: 0 !important;
+}
+
+/* Month View Specific Scroll */
+.fc-dayGridMonth-view .fc-scroller {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Week and Day View Specific Scroll */
+.fc-timeGridWeek-view .fc-scroller,
+.fc-timeGridDay-view .fc-scroller {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+/* Enhanced Calendar Scrollbars */
+.fc .fc-scroller::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-track {
+    background: var(--dark-card);
+    border-radius: 5px;
+}
+
+.fc .fc-scroller::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+    border: 2px solid var(--dark-card);
+}
+
+.fc .fc-scroller::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+.fc .fc-scroller::-webkit-scrollbar-corner {
+    background: var(--dark-card);
+}
+
+/* Firefox scrollbar */
+.fc .fc-scroller {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--dark-card);
+}
+
+/* Compact Calendar Grid */
+.fc .fc-daygrid-day {
+    background: var(--dark-card);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+    min-height: 80px;
+}
+
+.fc .fc-daygrid-day:hover {
+    background: var(--dark-surface);
+    transform: scale(1.01);
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background: linear-gradient(135deg, var(--primary-dark), #3730a3) !important;
+    border: 2px solid var(--accent);
+}
+
+.fc .fc-daygrid-day-number {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.25rem;
+}
+
+.fc .fc-col-header-cell {
+    background: var(--dark-card);
+    border: 1px solid var(--border);
+}
+
+.fc .fc-col-header-cell-cushion {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    text-decoration: none;
+}
+
+/* Fix Week and Day View Styling */
+.fc-timeGridWeek-view,
+.fc-timeGridDay-view {
+    background: var(--dark-surface) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-body,
+.fc-timeGridDay-view .fc-timegrid-body {
+    background: var(--dark-surface) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-slots table,
+.fc-timeGridDay-view .fc-timegrid-slots table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: var(--dark-surface) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-slot,
+.fc-timeGridDay-view .fc-timegrid-slot {
+    border-bottom: 1px solid var(--border) !important;
+    height: 35px !important;
+    background: var(--dark-surface) !important;
+}
+
+/* Remove top spacing above 00:00 */
+.fc-timegrid-slot-lane:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure no top gap inside scroll container */
+.fc-timegrid-body .fc-scroller {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+
+.fc-timeGridWeek-view .fc-timegrid-slot-lane,
+.fc-timeGridDay-view .fc-timegrid-slot-lane {
+    border-right: 1px solid var(--border) !important;
+    background: var(--dark-surface) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-col.fc-day-today,
+.fc-timeGridDay-view .fc-timegrid-col.fc-day-today {
+    background-color: rgba(79, 70, 229, 0.1) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-axis,
+.fc-timeGridDay-view .fc-timegrid-axis {
+    border-right: 2px solid var(--border) !important;
+    background: var(--dark-card) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-axis-frame,
+.fc-timeGridDay-view .fc-timegrid-axis-frame {
+    background: var(--dark-card) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Remove yellowish backgrounds */
+.fc-timeGridWeek-view .fc-timegrid-col,
+.fc-timeGridDay-view .fc-timegrid-col {
+    background: var(--dark-surface) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-col.fc-day-today,
+.fc-timeGridDay-view .fc-timegrid-col.fc-day-today {
+    background-color: rgba(79, 70, 229, 0.15) !important;
+}
+
+/* Fix time slot labels */
+.fc-timeGridWeek-view .fc-timegrid-slot-label,
+.fc-timeGridDay-view .fc-timegrid-slot-label {
+    background: var(--dark-card) !important;
+    border-bottom: 1px solid var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-slot-label-frame,
+.fc-timeGridDay-view .fc-timegrid-slot-label-frame {
+    background: var(--dark-card) !important;
+    color: var(--text-primary) !important;
+    text-align: center !important;
+    padding: 2px 6px !important;
+}
+
+/* Enhanced Event Styling */
+.fc-event {
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 3px 4px !important;
+    font-weight: 700 !important;
+    margin: 1px 2px !important;
+    min-height: 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    border-left: 3px solid rgba(255, 255, 255, 0.5) !important;
+    cursor: pointer;
+    transition: all 0.3s ease !important;
+}
+
+.fc-event:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4) !important;
+    filter: brightness(1.1) !important;
+}
+
+.fc-event-title {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    padding: 0 3px !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Month view event improvements */
+.fc-dayGridMonth-view .fc-event {
+    min-height: 18px !important;
+    padding: 2px 3px !important;
+}
+
+.fc-dayGridMonth-view .fc-event-title {
+    font-size: 0.7rem !important;
+}
+
+/* Week and Day view event improvements */
+.fc-timeGridWeek-view .fc-event,
+.fc-timeGridDay-view .fc-event {
+    min-height: 24px !important;
+    padding: 3px !important;
+    margin: 1px 1px !important;
+}
+
+.fc-timeGridWeek-view .fc-event-title,
+.fc-timeGridDay-view .fc-event-title {
+    font-size: 0.7rem !important;
+}
+
+/* Color-coded events based on title */
+.fc-event[title*="John"] {
+    background: linear-gradient(135deg, var(--event-color-1), #0d9488) !important;
+}
+
+.fc-event[title*="Sarah"] {
+    background: linear-gradient(135deg, var(--event-color-2), #d97706) !important;
+}
+
+.fc-event[title*="Mike"] {
+    background: linear-gradient(135deg, var(--event-color-3), #dc2626) !important;
+}
+
+.fc-event[title*="Emily"] {
+    background: linear-gradient(135deg, var(--event-color-4), #7c3aed) !important;
+}
+
+.fc-event[title*="David"] {
+    background: linear-gradient(135deg, var(--event-color-5), #0891b2) !important;
+}
+
+/* Default event color */
+.fc-event:not([title*="John"]):not([title*="Sarah"]):not([title*="Mike"]):not([title*="Emily"]):not([title*="David"]) {
+    background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+}
+
+/* Ensure proper calendar height calculation */
+.fc .fc-scroller-liquid-absolute {
+    position: relative !important;
+    height: 100% !important;
+}
+
+.fc .fc-scroller {
+    overflow: auto !important;
+    height: 100% !important;
+    min-height: 300px;
+}
+
+.fc .fc-view {
+    height: 100% !important;
+    min-height: 0 !important;
+}
+
+.fc-view-harness {
+    flex: 1;
+    min-height: 0 !important;
+    background: var(--dark-surface) !important;
+}
+
+/* Remove any default FullCalendar backgrounds */
+.fc .fc-timegrid-body table,
+.fc .fc-timegrid-body td,
+.fc .fc-timegrid-body th {
+    background: transparent !important;
+    border-color: var(--border) !important;
+}
+
+/* Fix for the dotted/dashed lines */
+.fc-theme-standard .fc-timegrid-divider,
+.fc-theme-standard .fc-timegrid-slot-label,
+.fc-theme-standard .fc-timegrid-slot-lane {
+    border-style: solid !important;
+    border-color: var(--border) !important;
+}
+
+/* Fix for the axis and column lines */
+.fc .fc-timegrid-axis,
+.fc .fc-timegrid-col-frame {
+    border-style: solid !important;
+    border-color: var(--border) !important;
+}
+
+/* Ensure events are visible in all views */
+.fc-daygrid-day-events {
+    min-height: 18px !important;
+}
+
+.fc-daygrid-event {
+    margin: 1px 1px !important;
+}
+
+/* Better time labels in week/day views */
+.fc-timegrid-axis-frame {
+    background: var(--dark-card) !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem;
+}
+
+.fc-timegrid-slot-label-frame {
+    text-align: center !important;
+    padding: 2px !important;
+    font-size: 0.8rem;
+}
+
+/* Now-indicator styling */
+.fc .fc-timegrid-now-indicator-line {
+    border-color: var(--accent) !important;
+    border-width: 2px !important;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+    border-color: var(--accent) !important;
+}
+
+/* Chat Container */
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--dark-surface);
+    min-height: 0;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 0;
+}
+
+/* Enhanced Message Styles */
+.message {
+    display: flex;
+    animation: fadeInUp 0.3s ease;
+}
+
+.message.user-message {
+    justify-content: flex-end;
+}
+
+.message.bot-message {
+    justify-content: flex-start;
+}
+
+.message-content {
+    max-width: 85%;
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, var(--user-msg), #2563eb);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-message .message-content {
+    background: var(--dark-card);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+.message-text {
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-align: right;
+}
+
+/* Enhanced Chat Input */
+.chat-input-container {
+    padding: 1.5rem;
+    background: var(--dark-card);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    background: var(--dark-surface);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+    resize: none;
+    min-height: 50px;
+    max-height: 120px;
+}
+
+#chat-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+#chat-input::placeholder {
+    color: var(--text-secondary);
+}
+
+#send-button {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+#send-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+}
+
+#send-button:active {
+    transform: translateY(0);
+}
+
+/* Typing Animation */
+.typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.typing-dots span {
+    height: 8px;
+    width: 8px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+    0%, 80%, 100% { 
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* New event highlight animation */
+.fc-event-highlight {
+    animation: pulse 2s ease-in-out 3;
+}
+
+/* Scrollbar Styling */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: var(--dark-surface);
+    border-radius: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+    border: 2px solid var(--dark-surface);
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .calendar-section, .chatbot-section {
+        flex: 1;
+        min-height: 50vh;
+    }
+    
+    .chatbot-section {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        margin-left: 0;
+    }
+    
+    .calendar-section {
+        margin-right: 0;
+    }
+    
+    .message-content {
+        max-width: 90%;
+    }
+
+    .fc .fc-scroller {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fc .fc-toolbar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+    
+    .fc .fc-toolbar-chunk {
+        width: 100% !important;
+        justify-content: flex-start !important;
+    }
+    
+    .fc .fc-toolbar-title {
+        font-size: 1rem !important;
+    }
+    
+    .section-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    #calendar {
+        padding: 0.25rem 0.5rem;
+    }
+    
+    
+    .fc {
+        padding: 0.25rem !important;
+    }
+
+    .fc-header-toolbar {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    }
+    
+
+
+    .fc .fc-button {
+        padding: 0.3rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Smaller scrollbars for mobile */
+    .fc .fc-scroller::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .chat-input-container {
+        padding: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .chatbot-section {
+        display: none;
+    }
+    
+    .calendar-section {
+        flex: 1;
+    }
+
+    /* Hide scrollbars when printing */
+    .fc .fc-scroller {
+        overflow: visible !important;
+    }
+}
