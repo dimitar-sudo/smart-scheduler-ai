@@ -8,13 +8,11 @@ from datetime import datetime as dt
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this in production
+app.secret_key = 'your_secret_key_here'
 app.secret_key = os.urandom(24)
 
-# Load spaCy model
 nlp = spacy.load("en_core_web_md")
 
-# List of words that should never be considered as names
 excluded_names = ["the", "a", "an", "this", "that", "these", "those", 
                  "today", "tomorrow", "yesterday", "monday", "tuesday", 
                  "wednesday", "thursday", "friday", "saturday", "sunday",
@@ -23,7 +21,6 @@ excluded_names = ["the", "a", "an", "this", "that", "these", "those",
                  "july", "august", "september", "october", "november", "december"]
 
 def is_time_expression(text):
-    """Check if the text looks like a time expression"""
     if not text:
         return False
     time_patterns = [
@@ -37,7 +34,6 @@ def is_time_expression(text):
     return False
 
 def is_within_working_hours(time_str):
-    """Check if the given time is within working hours (09:00-17:00)"""
     try:
         if isinstance(time_str, str):
             time_obj = parser.parse(time_str).time()
@@ -52,7 +48,6 @@ def is_within_working_hours(time_str):
         return False
 
 def get_default_reservation():
-    """Return a reservation dictionary with all required keys"""
     return {
         "title": None,   
         "start": None, 
@@ -62,18 +57,14 @@ def get_default_reservation():
     }
 
 def safe_get(dictionary, key, default=None):
-    """Safely get a value from dictionary with default"""
     if not isinstance(dictionary, dict):
         return default
     return dictionary.get(key, default)
 
 def parse_reservation_text(text, current_reservation=None):
-    """Process reservation text using the provided logic"""
-    # Ensure current_reservation has all required keys
     if current_reservation is None:
         current_reservation = get_default_reservation()
     else:
-        # Merge with default to ensure all keys exist
         default = get_default_reservation()
         for key in default:
             if key not in current_reservation:
@@ -84,7 +75,6 @@ def parse_reservation_text(text, current_reservation=None):
     
     doc = nlp(text)
     
-    # Extract entities with better filtering
     for ent in doc.ents:
         if ent.label_ == "PERSON":
             if (ent.text.lower() not in excluded_names and 
@@ -134,14 +124,11 @@ def parse_reservation_text(text, current_reservation=None):
         elif ent.label_ == "TIME":
             time_text = ent.text
             try:
-                # Improved time parsing that handles minutes
                 parsed_time = parser.parse(time_text)
-                # Store the full time with minutes
                 current_reservation["end"] = parsed_time.strftime("%H:%M")
             except:
                 current_reservation["end"] = time_text
 
-    # Fallback: if entities weren't properly detected, use pattern matching
     if not current_reservation.get("title"):
         name_patterns = [
             r"under\s+the\s+name\s+of\s+([a-zA-Z\s]+)",
@@ -161,12 +148,11 @@ def parse_reservation_text(text, current_reservation=None):
                     current_reservation["title"] = name_candidate + " Appointment"
                     break
 
-    # Improved time parsing that handles minutes and various time formats
     if not current_reservation.get("end") or any(word in str(current_reservation.get("end", "")).lower() for word in ["afternoon", "morning", "evening", "night"]):
         time_patterns = [
             r'(\d{1,2})\s*(?:o\'?clock)?\s*(?:in the\s+)?(afternoon|evening|morning|night)',
             r'(\d{1,2})\s*(?:o\'?clock)?\s*(am|pm)',
-            r'(\d{1,2})(?::(\d{2}))?\s*(am|pm)?',  # This pattern now captures minutes
+            r'(\d{1,2})(?::(\d{2}))?\s*(am|pm)?',
             r'(\d{1,2})(?::(\d{2}))?\s*(?:in the\s+)?(afternoon|evening|morning|night)'
         ]
         
@@ -174,25 +160,17 @@ def parse_reservation_text(text, current_reservation=None):
             match = re.search(pattern, text, re.IGNORECASE)
             if match:
                 hour = int(match.group(1))
-                minutes = 0  # Default to 0 minutes
-                
-                # Check if minutes are captured (group 2)
+                minutes = 0
                 if match.lastindex >= 2 and match.group(2) and match.group(2).isdigit():
                     minutes = int(match.group(2))
-                
                 period = None
-                # Determine which group contains the period indicator
                 if match.lastindex >= 3 and match.group(match.lastindex):
                     period = match.group(match.lastindex).lower()
-                
-                # Handle 12-hour format conversion
                 if period in ['pm', 'afternoon', 'evening', 'night']:
                     if hour < 12:
                         hour += 12
                 elif period in ['am', 'morning'] and hour == 12:
                     hour = 0
-                    
-                # Format time with minutes
                 current_reservation["end"] = f"{hour:02d}:{minutes:02d}"
                 break
 
@@ -234,40 +212,26 @@ def parse_reservation_text(text, current_reservation=None):
                             current_reservation["start"] = next_day.strftime("%d.%m.%Y")
                         break
 
-    # Convert to ISO format if we have both date and time - FIXED MINUTES HANDLING
     if current_reservation.get("start") and current_reservation.get("end"):
         try:
-            # Parse the date (handles DD.MM.YYYY format)
             start_date = parser.parse(current_reservation["start"], dayfirst=True)
-            
-            # Parse the time (handles HH:MM format with minutes)
             time_str = current_reservation["end"]
             if ':' in time_str:
-                # Time has minutes (e.g., "09:15")
                 time_parts = time_str.split(':')
                 hours = int(time_parts[0])
                 minutes = int(time_parts[1]) if len(time_parts) > 1 else 0
             else:
-                # Time without minutes (e.g., "9" or "09")
                 hours = int(time_str)
                 minutes = 0
-            
-            # Create datetime objects with proper minutes
             start_datetime = datetime.datetime.combine(
                 start_date.date(), 
                 datetime.time(hours, minutes)
             )
-            
-            # Calculate end time (1 hour duration)
             end_datetime = start_datetime + datetime.timedelta(hours=1)
-            
-            # Format for FullCalendar
             current_reservation["start"] = start_datetime.strftime("%Y-%m-%dT%H:%M:%S")
             current_reservation["end"] = end_datetime.strftime("%Y-%m-%dT%H:%M:%S")
-            
         except Exception as e:
             print(f"Error converting date/time: {e}")
-            # Fallback: try to parse as complete datetime string
             try:
                 start_datetime = parser.parse(current_reservation["start"] + " " + current_reservation["end"])
                 end_datetime = start_datetime + datetime.timedelta(hours=1)
@@ -279,15 +243,12 @@ def parse_reservation_text(text, current_reservation=None):
     return current_reservation
 
 def check_overlap(new_event, existing_events):
-    """Check if new event overlaps with any existing events"""
     try:
         new_start = parser.parse(new_event["start"])
         new_end = parser.parse(new_event["end"])
-        
         for event in existing_events:
             existing_start = parser.parse(event["start"])
             existing_end = parser.parse(event["end"])
-            
             if (new_start < existing_end and new_end > existing_start):
                 return True
         return False
@@ -296,7 +257,6 @@ def check_overlap(new_event, existing_events):
 
 @app.route('/')
 def index():
-    # Initialize session reservations if not exists
     if 'reservations' not in session:
         session['reservations'] = []
     return render_template('index.html')
@@ -306,87 +266,70 @@ def process_reservation():
     try:
         user_message = request.json.get('message', '')
         current_reservation = request.json.get('current_reservation', {})
-        
-        # Parse the reservation
         reservation = parse_reservation_text(user_message, current_reservation)
-        
         response = {
             "reservation": reservation,
             "messages": [],
             "needs_info": False,
             "success": True
         }
-        
-        # Check for missing information and prompt user
         title = safe_get(reservation, "title")
         start_date = safe_get(reservation, "start")
         end_time = safe_get(reservation, "end")
-        
-        if not title or title.lower() in excluded_names or is_time_expression(title):
-            response["messages"].append("Please enter the name for the appointment:")
-            response["needs_info"] = True
-            response["missing_field"] = "title"
-        
-        elif not start_date:
-            response["messages"].append("Please enter the date for the appointment:")
-            response["needs_info"] = True
-            response["missing_field"] = "start"
-        
-        elif not end_time:
-            response["messages"].append("Please enter the time for the appointment:")
-            response["needs_info"] = True
-            response["missing_field"] = "end"
-        
-        else:
-            # Check working hours
+        if end_time:
             try:
                 time_obj = parser.parse(end_time).time()
                 if not is_within_working_hours(time_obj):
-                    response["messages"].append("The time you entered is outside working hours (09:00-17:00). Please enter a different time.")
+                    response["messages"].append("The time you entered is outside working hours (09:00-17:00). Please enter a different time:")
                     response["needs_info"] = True
                     response["missing_field"] = "end"
-                    reservation["end"] = None  # Reset time to force re-entry
-            except:
+                    reservation["end"] = None
+                    return jsonify(response)
+            except Exception as e:
+                print(f"Time parsing error: {e}")
                 response["messages"].append("Invalid time format. Please enter a valid time:")
                 response["needs_info"] = True
                 response["missing_field"] = "end"
                 reservation["end"] = None
-            
-            # If all information is complete and valid, check for overlaps
-            if not response["needs_info"]:
-                existing_reservations = session.get('reservations', [])
-                if check_overlap(reservation, existing_reservations):
-                    response["messages"].append("That time is already booked. Please choose a different time.")
-                    response["needs_info"] = True
-                    response["missing_field"] = "end"
-                    reservation["end"] = None
-                else:
-                    # Add to session and confirm
-                    existing_reservations.append(reservation)
-                    session['reservations'] = existing_reservations
-                    
-                    # Format confirmation message
-                    try:
-                        start_dt = parser.parse(reservation["start"])
-                        end_dt = parser.parse(reservation["end"])
-                        
-                        response["messages"].append(
-                            f"Appointment booked for {reservation['title']} on " +
-                            f"{start_dt.strftime('%d.%m.%Y')} at {start_dt.strftime('%H:%M')}."
-                        )
-                        response["reservation_complete"] = True
-                    except Exception as e:
-                        response["messages"].append(
-                            f"Appointment booked for {reservation['title']}!"
-                        )
-                        response["reservation_complete"] = True
-        
-        # If we have no specific messages but reservation isn't complete, provide status update
+                return jsonify(response)
+        if not title or title.lower() in excluded_names or is_time_expression(title):
+            response["messages"].append("Please enter the name for the appointment:")
+            response["needs_info"] = True
+            response["missing_field"] = "title"
+        elif not start_date:
+            response["messages"].append("Please enter the date for the appointment:")
+            response["needs_info"] = True
+            response["missing_field"] = "start"
+        elif not end_time:
+            response["messages"].append("Please enter the time for the appointment:")
+            response["needs_info"] = True
+            response["missing_field"] = "end"
+        else:
+            existing_reservations = session.get('reservations', [])
+            if check_overlap(reservation, existing_reservations):
+                response["messages"].append("That time is already booked. Please choose a different time.")
+                response["needs_info"] = True
+                response["missing_field"] = "end"
+                reservation["end"] = None
+            else:
+                existing_reservations.append(reservation)
+                session['reservations'] = existing_reservations
+                try:
+                    start_dt = parser.parse(reservation["start"])
+                    end_dt = parser.parse(reservation["end"])
+                    response["messages"].append(
+                        f"Appointment booked for {reservation['title']} on " +
+                        f"{start_dt.strftime('%d.%m.%Y')} at {start_dt.strftime('%H:%M')}."
+                    )
+                    response["reservation_complete"] = True
+                except Exception as e:
+                    response["messages"].append(
+                        f"Appointment booked for {reservation['title']}!"
+                    )
+                    response["reservation_complete"] = True
         if not response["messages"] and not response.get("reservation_complete"):
             response["messages"].append("I'm processing your reservation. Please provide more details if needed.")
-        
         return jsonify(response)
-    
     except Exception as e:
         print(f"Error in process_reservation: {e}")
         return jsonify({

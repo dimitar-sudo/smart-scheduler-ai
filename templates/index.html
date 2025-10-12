@@ -10,7 +10,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Calendar Section -->
         <div class="calendar-section">
             <div class="section-header">
                 <h2><i class="fas fa-calendar-alt"></i> Appointment Calendar</h2>
@@ -18,7 +17,6 @@
             <div id="calendar"></div>
         </div>
 
-        <!-- Chatbot Section -->
         <div class="chatbot-section">
             <div class="section-header">
                 <h2><i class="fas fa-robot"></i> Appointment Assistant</h2>
@@ -30,7 +28,7 @@
                         <div class="message-content">
                             <div class="message-text">
                                 Hello! I can help you make an appointment. Please tell me the details like:
-                                "Book an appointment with John tomorrow at 3 pm" or "Appointment for Sarah on Monday at 2:30"
+                                "Book an appointment under the name John tomorrow at 3 pm" or "Appointment for Sarah on Monday at 2:30"
                             </div>
                             <div class="message-time"></div>
                         </div>
@@ -49,7 +47,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

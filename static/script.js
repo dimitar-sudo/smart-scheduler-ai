@@ -27,32 +27,28 @@ class ReservationChatbot {
                 this.showEventDetails(event);
             },
             eventDisplay: 'block',
-            eventColor: '#10b981',
-            eventTextColor: '#ffffff',
             eventTimeFormat: {
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: true
             },
-            // Calendar sizing and performance
             height: '100%',
             contentHeight: 'auto',
             aspectRatio: 1.5,
             handleWindowResize: true,
             windowResizeDelay: 50,
             
-            // Enhanced calendar settings
             dayMaxEvents: true,
-            dayMaxEventRows: 6, // Increased to show more events
+            dayMaxEventRows: 6,
             views: {
                 dayGridMonth: {
-                    dayMaxEvents: 6, // Show more events in month view
+                    dayMaxEvents: 6,
                     dayPopoverFormat: { month: 'long', day: 'numeric', year: 'numeric' }
                 },
                 timeGridWeek: {
                     slotMinTime: '08:00:00',
                     slotMaxTime: '18:00:00',
-                    slotDuration: '00:15:00', // 15-minute slots to see precise times
+                    slotDuration: '00:15:00',
                     slotLabelFormat: {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -64,7 +60,7 @@ class ReservationChatbot {
                 timeGridDay: {
                     slotMinTime: '08:00:00',
                     slotMaxTime: '18:00:00',
-                    slotDuration: '00:15:00', // 15-minute slots
+                    slotDuration: '00:15:00',
                     slotLabelFormat: {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -75,17 +71,10 @@ class ReservationChatbot {
                 }
             },
             
-            // Better event rendering
             eventDidMount: (info) => {
-                // Remove any default styles that might cause issues
-                info.el.style.backgroundColor = '';
-                info.el.style.backgroundImage = '';
-                
-                // Add consistent styling
                 info.el.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
                 info.el.style.transition = 'all 0.3s ease';
                 
-                // Ensure text is readable
                 const eventTitle = info.el.querySelector('.fc-event-title');
                 if (eventTitle) {
                     eventTitle.style.color = 'white';
@@ -95,14 +84,6 @@ class ReservationChatbot {
                     eventTitle.style.lineHeight = '1.2';
                 }
 
-                // Add time display for events
-                const eventTime = info.el.querySelector('.fc-event-time');
-                if (eventTime) {
-                    eventTime.style.fontWeight = '600';
-                    eventTime.style.opacity = '0.9';
-                }
-                
-                // Add tooltip with full event details
                 const start = info.event.start;
                 const end = info.event.end;
                 let tooltip = info.event.title;
@@ -113,38 +94,10 @@ class ReservationChatbot {
                 }
                 
                 info.el.title = tooltip;
-                
-                // Highlight new events
-                if (info.event.extendedProps.isNew) {
-                    info.el.classList.add('fc-event-highlight');
-                    setTimeout(() => {
-                        info.event.setExtendedProp('isNew', false);
-                    }, 6000);
-                }
-            },
-            
-            // Better date formatting
-            titleFormat: { year: 'numeric', month: 'long' },
-            slotLabelFormat: {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
             }
         });
 
         this.calendar.render();
-        
-        // Ensure proper sizing after render
-        setTimeout(() => {
-            this.calendar.updateSize();
-        }, 100);
-        
-        // Also update on window resize
-        window.addEventListener('resize', () => {
-            setTimeout(() => {
-                this.calendar.updateSize();
-            }, 50);
-        });
     }
 
     formatEventTime(event) {
@@ -200,12 +153,10 @@ class ReservationChatbot {
         const chatInput = document.getElementById('chat-input');
         const sendButton = document.getElementById('send-button');
 
-        // Send message on button click
         sendButton.addEventListener('click', () => {
             this.sendMessage();
         });
 
-        // Send message on Enter key
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -213,20 +164,16 @@ class ReservationChatbot {
             }
         });
 
-        // Auto-focus input and scroll to bottom on load
         chatInput.focus();
         this.scrollChatToBottom();
         
-        // Auto-resize textarea
         chatInput.addEventListener('input', () => {
             this.autoResizeTextarea(chatInput);
         });
     }
 
     autoResizeTextarea(textarea) {
-        // Reset height to auto to get the correct scrollHeight
         textarea.style.height = 'auto';
-        // Set the height to scrollHeight to fit content, with max height
         textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
     }
 
@@ -243,15 +190,11 @@ class ReservationChatbot {
 
         if (!message || this.isProcessing) return;
 
-        // Clear input and reset height
         chatInput.value = '';
         chatInput.style.height = 'auto';
         this.isProcessing = true;
 
-        // Add user message to chat
         this.showMessage(message, 'user');
-
-        // Show typing indicator
         this.showTypingIndicator();
 
         try {
@@ -267,47 +210,19 @@ class ReservationChatbot {
             });
 
             const data = await response.json();
-
-            // Remove typing indicator
             this.removeTypingIndicator();
 
-            // Show bot responses
             data.messages.forEach(msg => {
                 this.showMessage(msg, 'bot');
             });
 
-            // Update current reservation state
             if (data.reservation) {
                 this.currentReservation = data.reservation;
-                
-                // Show current reservation status
-                if (this.currentReservation.title || this.currentReservation.start || this.currentReservation.end) {
-                    let statusMsg = "Current reservation details:\n";
-                    if (this.currentReservation.title) statusMsg += `• Name: ${this.currentReservation.title}\n`;
-                    if (this.currentReservation.start) {
-                        try {
-                            const startDate = new Date(this.currentReservation.start);
-                            statusMsg += `• Date: ${startDate.toLocaleDateString()}\n`;
-                        } catch (e) {
-                            statusMsg += `• Date: ${this.currentReservation.start}\n`;
-                        }
-                    }
-                    if (this.currentReservation.end) {
-                        try {
-                            const endDate = new Date(this.currentReservation.end);
-                            statusMsg += `• Time: ${endDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}\n`;
-                        } catch (e) {
-                            statusMsg += `• Time: ${this.currentReservation.end}\n`;
-                        }
-                    }
-                    this.showMessage(statusMsg, 'bot');
-                }
             }
 
-            // If reservation is complete, reset for next one
             if (data.reservation_complete) {
                 this.currentReservation = {};
-                await this.loadReservations(true); // Refresh calendar with highlight
+                await this.loadReservations();
             }
 
         } catch (error) {
@@ -328,7 +243,6 @@ class ReservationChatbot {
         const now = new Date();
         const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        // Convert newlines to <br> tags for bot messages
         const formattedText = sender === 'bot' ? text.replace(/\n/g, '<br>') : text;
 
         messageDiv.innerHTML = `
@@ -376,31 +290,38 @@ class ReservationChatbot {
             const response = await fetch('/get_reservations');
             const reservations = await response.json();
 
-            // Convert reservations to FullCalendar events format
+            console.log('Loaded reservations:', reservations);
+
             const events = reservations.map((reservation, index) => {
-                // Generate consistent color based on name
-                const eventId = reservation.title + reservation.start;
+                const name = reservation.title ? reservation.title.toLowerCase() : '';
+                const color = this.getEventColor(name);
                 
                 return {
-                    id: eventId,
-                    title: reservation.title,
+                    id: `event-${index}-${Date.now()}`,
+                    title: reservation.title || 'Unknown Appointment',
                     start: reservation.start,
                     end: reservation.end,
-                    allDay: reservation.allDay,
-                    description: reservation.description,
+                    allDay: false,
+                    color: color,
                     extendedProps: {
-                        isNew: highlightNew && index === reservations.length - 1
-                    },
-                    // Add color coding based on name
-                    color: this.getEventColor(reservation.title)
+                        description: reservation.description || 'Reservation made via chatbot'
+                    }
                 };
             });
 
-            // Update calendar
+            console.log('Converted events:', events);
+
             this.calendar.removeAllEvents();
-            this.calendar.addEventSource(events);
-            
-            // Refresh calendar view
+            if (events.length > 0) {
+                events.forEach(event => {
+                    try {
+                        this.calendar.addEvent(event);
+                    } catch (error) {
+                        console.error('Error adding event:', error, event);
+                    }
+                });
+            }
+
             this.calendar.render();
 
         } catch (error) {
@@ -408,26 +329,12 @@ class ReservationChatbot {
         }
     }
 
-    getEventColor(title) {
-        // Color coding based on names for better visual distinction
-        const colors = {
-            'john': '#10b981',
-            'sarah': '#f59e0b', 
-            'mike': '#ef4444',
-            'emily': '#8b5cf6',
-            'david': '#06b6d4'
-        };
-        
-        if (!title) return '#6366f1';
-        
-        const lowerTitle = title.toLowerCase();
-        for (const [name, color] of Object.entries(colors)) {
-            if (lowerTitle.includes(name)) {
-                return color;
-            }
-        }
-        
-        // Default color for other names
+    getEventColor(name) {
+        if (name.includes('john')) return '#10b981';
+        if (name.includes('sarah')) return '#f59e0b';
+        if (name.includes('mike')) return '#ef4444';
+        if (name.includes('emily')) return '#8b5cf6';
+        if (name.includes('david')) return '#06b6d4';
         return '#6366f1';
     }
 
@@ -438,7 +345,6 @@ class ReservationChatbot {
     }
 }
 
-// Initialize the chatbot when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     new ReservationChatbot();
 });

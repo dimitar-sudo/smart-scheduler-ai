@@ -40,7 +40,6 @@ body {
     overflow: hidden;
 }
 
-/* Calendar Section - 70% width */
 .calendar-section {
     flex: 7;
     background: var(--dark-surface);
@@ -52,7 +51,6 @@ body {
     margin-right: 1px;
 }
 
-/* Chatbot Section - 30% width */
 .chatbot-section {
     flex: 3;
     background: var(--dark-surface);
@@ -82,7 +80,6 @@ body {
     color: var(--primary);
 }
 
-/* Calendar Styles */
 #calendar {
     flex: 1;
     padding: 1rem;
@@ -93,7 +90,6 @@ body {
     height: 100%;
 }
 
-/* Enhanced FullCalendar Dark Theme */
 .fc {
     background: var(--dark-surface) !important;
     border-radius: 12px;
@@ -115,18 +111,24 @@ body {
     gap: 0.5rem !important;
 }
 
-/* Enable scrolling in week and day views */
 .fc-timeGridWeek-view,
 .fc-timeGridDay-view {
   overflow-y: auto !important;
   height: 100% !important;
 }
 
+.fc-timeGridDay-view .fc-timegrid-col.fc-day-today,
+.fc-timeGridWeek-view .fc-timegrid-col.fc-day-today {
+  box-shadow: 0 0 18px 2px var(--primary);
+  border-radius: 12px;
+  background-color: rgba(99,102,241,0.09) !important;
+  z-index: 2;
+}
+
 .fc .fc-scroller {
   overflow-y: auto !important;
   max-height: 100% !important;
 }
-
 
 .fc .fc-toolbar-title {
     color: var(--text-primary);
@@ -199,6 +201,12 @@ body {
     border: 1px solid var(--border);
 }
 
+.fc .fc-col-header-cell {
+  backdrop-filter: blur(4px);
+  background: rgba(30, 41, 59, 0.8) !important;
+  border-bottom: 2px solid var(--primary-dark);
+}
+
 .fc .fc-col-header-cell-cushion {
     color: var(--text-primary);
     font-weight: 700;
@@ -207,7 +215,6 @@ body {
     text-decoration: none;
 }
 
-/* Fix Week and Day View Styling - Remove Yellowish Tint and Dotted Lines */
 .fc-timeGridWeek-view,
 .fc-timeGridDay-view {
     background: var(--dark-surface) !important;
@@ -255,7 +262,6 @@ body {
     color: var(--text-primary) !important;
 }
 
-/* Remove any yellowish backgrounds and fix cell colors */
 .fc-timeGridWeek-view .fc-timegrid-col,
 .fc-timeGridDay-view .fc-timegrid-col {
     background: var(--dark-surface) !important;
@@ -266,7 +272,6 @@ body {
     background-color: rgba(79, 70, 229, 0.15) !important;
 }
 
-/* Fix the time slot labels */
 .fc-timeGridWeek-view .fc-timegrid-slot-label,
 .fc-timeGridDay-view .fc-timegrid-slot-label {
     background: var(--dark-card) !important;
@@ -282,13 +287,11 @@ body {
     padding: 4px 8px !important;
 }
 
-/* Fix event container backgrounds */
 .fc-timeGridWeek-view .fc-timegrid-events,
 .fc-timeGridDay-view .fc-timegrid-events {
     background: var(--dark-surface) !important;
 }
 
-/* Enhanced Event Styling */
 .fc-event {
     border: none !important;
     border-radius: 6px !important;
@@ -305,9 +308,9 @@ body {
 }
 
 .fc-event:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
-    filter: brightness(1.1) !important;
+  transform: scale(1.04);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.38), 0 1.5px 6px #0003;
+  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
 }
 
 .fc-event-title {
@@ -325,7 +328,6 @@ body {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Month view event improvements */
 .fc-dayGridMonth-view .fc-event {
     min-height: 20px !important;
     padding: 4px 2px !important;
@@ -336,7 +338,6 @@ body {
     -webkit-line-clamp: 2 !important;
 }
 
-/* Week and Day view event improvements */
 .fc-timeGridWeek-view .fc-event,
 .fc-timeGridDay-view .fc-event {
     min-height: 26px !important;
@@ -350,7 +351,6 @@ body {
     -webkit-line-clamp: 2 !important;
 }
 
-/* Color-coded events based on title */
 .fc-event[title*="John"] {
     background: linear-gradient(135deg, var(--event-color-1), #0d9488) !important;
 }
@@ -371,12 +371,10 @@ body {
     background: linear-gradient(135deg, var(--event-color-5), #0891b2) !important;
 }
 
-/* Default event color */
 .fc-event:not([title*="John"]):not([title*="Sarah"]):not([title*="Mike"]):not([title*="Emily"]):not([title*="David"]) {
     background: linear-gradient(135deg, #6b7280, #4b5563) !important;
 }
 
-/* Calendar view specific adjustments */
 .fc-dayGridMonth-view .fc-event {
     font-size: 0.85rem !important;
 }
@@ -386,7 +384,6 @@ body {
     font-size: 0.8rem !important;
 }
 
-/* Ensure proper calendar height calculation */
 .fc .fc-scroller-liquid-absolute {
     position: relative !important;
     height: 100% !important;
@@ -412,7 +409,6 @@ body {
     background: var(--dark-surface) !important;
 }
 
-/* Remove any default FullCalendar backgrounds that cause yellowish tint */
 .fc .fc-timegrid-body table,
 .fc .fc-timegrid-body td,
 .fc .fc-timegrid-body th {
@@ -420,7 +416,6 @@ body {
     border-color: var(--border) !important;
 }
 
-/* Specific fix for the dotted/dashed lines */
 .fc-theme-standard .fc-timegrid-divider,
 .fc-theme-standard .fc-timegrid-slot-label,
 .fc-theme-standard .fc-timegrid-slot-lane {
@@ -428,14 +423,12 @@ body {
     border-color: var(--border) !important;
 }
 
-/* Fix for the axis and column lines */
 .fc .fc-timegrid-axis,
 .fc .fc-timegrid-col-frame {
     border-style: solid !important;
     border-color: var(--border) !important;
 }
 
-/* Ensure events are visible in all views */
 .fc-daygrid-day-events {
     min-height: 20px !important;
 }
@@ -444,18 +437,20 @@ body {
     margin: 1px 1px !important;
 }
 
-/* Better time labels in week/day views */
-.fc-timegrid-axis-frame {
-    background: var(--dark-card) !important;
-    font-weight: 600 !important;
+.fc .fc-timegrid-axis-frame {
+  background: linear-gradient(135deg, var(--dark-card), var(--dark-surface));
+  color: var(--accent) !important;
+  font-weight: 700;
+  border-radius: 6px;
+  opacity: 0.94;
+  padding: 8px 0px !important;
 }
 
-.fc-timegrid-slot-label-frame {
-    text-align: center !important;
-    padding: 4px !important;
+.fc .fc-timegrid-slot-label-frame {
+  text-align: center !important;
+  padding: 4px 0px !important;
 }
 
-/* Now-indicator styling */
 .fc .fc-timegrid-now-indicator-line {
     border-color: var(--accent) !important;
     border-width: 2px !important;
@@ -465,7 +460,6 @@ body {
     border-color: var(--accent) !important;
 }
 
-/* Chat Container */
 .chat-container {
     flex: 1;
     display: flex;
@@ -484,7 +478,6 @@ body {
     min-height: 0;
 }
 
-/* Enhanced Message Styles */
 .message {
     display: flex;
     animation: fadeInUp 0.3s ease;
@@ -532,7 +525,6 @@ body {
     text-align: right;
 }
 
-/* Enhanced Chat Input */
 .chat-input-container {
     padding: 1.5rem;
     background: var(--dark-card);
@@ -594,7 +586,6 @@ body {
     transform: translateY(0);
 }
 
-/* Typing Animation */
 .typing-dots {
     display: flex;
     gap: 4px;
@@ -624,7 +615,6 @@ body {
     }
 }
 
-/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -645,12 +635,10 @@ body {
     }
 }
 
-/* New event highlight animation */
 .fc-event-highlight {
     animation: pulse 2s ease-in-out 3;
 }
 
-/* Scrollbar Styling */
 .chat-messages::-webkit-scrollbar {
     width: 8px;
 }
@@ -670,7 +658,6 @@ body {
     background: var(--text-secondary);
 }
 
-/* Custom scrollbar for calendar */
 .fc-scroller::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -689,7 +676,6 @@ body {
     background: var(--text-secondary);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
     .container {
         flex-direction: column;
@@ -753,7 +739,6 @@ body {
     }
 }
 
-/* Print Styles */
 @media print {
     .chatbot-section {
         display: none;
