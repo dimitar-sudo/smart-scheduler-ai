@@ -1,11 +1,11 @@
 # 🗓️ Smart Scheduler AI — Conversational Appointment Scheduler
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-local-orange)]()  
+[![Live Demo](https://smart-scheduler-ai.onrender.com)]()  
 [![Python Version](https://img.shields.io/badge/Python-3.12-blue)](https://python.org)  
 [![Flask](https://img.shields.io/badge/Flask-3.1.2-green)](https://flask.palletsprojects.com)  
 [![spaCy](https://img.shields.io/badge/spaCy-3.8.7-purple)](https://spacy.io)
 
-A professional, dark-themed web application that demonstrates conversational NLP-driven scheduling. Users can create appointments via a chat interface; the backend extracts names, dates and times with spaCy and renders events on a FullCalendar UI. Ideal for portfolio demos to showcase practical skills in NLP, backend design, and frontend integration.
+A professional, dark-themed web application that demonstrates conversational NLP-driven scheduling. Users can create appointments via a chat interface; the backend extracts names, dates and times with spaCy and renders events on a FullCalendar UI.
 
 ![Smart Scheduler Interface](screenshot.jpg)
 
@@ -13,8 +13,8 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ## Features
 
-- **🗣️ Natural-language Booking**: Parse free-text user messages into appointment data (name, date, time).  
-- **📅 FullCalendar Integration**: Events appear on a responsive calendar with color-coding and tooltips.  
+- **🗣️ Natural-language Booking**: Parse user messages into appointment data (name, date, time).  
+- **📅 FullCalendar Integration**: Events appear on a responsive calendar.  
 - **⚠️ Conflict Detection**: Overlap checking to avoid double-booking.  
 - **🧭 Robust Date/Time Handling**: Uses python-dateutil with multiple parsing fallbacks and heuristics.  
 - **💬 Chat-style UX**: Progressive information requests when details are missing (name/date/time).  
