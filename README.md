@@ -7,7 +7,7 @@
 
 A professional, dark-themed web application that demonstrates conversational NLP-driven scheduling. Users can create appointments via a chat interface; the backend extracts names, dates and times with spaCy and renders events on a FullCalendar UI.
 
-![Smart Scheduler Interface](screenshot.jpg)
+![Smart Scheduler Interface](screenshot.png)
 
 ---
 
