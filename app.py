@@ -14,10 +14,16 @@ app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-producti
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
-    # If model isn't available, download it
-    from spacy.cli import download
-    download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+    # If model isn't available, try to download it
+    try:
+        import subprocess
+        import sys
+        subprocess.check_call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+        nlp = spacy.load("en_core_web_sm")
+    except:
+        # Fallback: create a simple NLP function without spaCy
+        print("Warning: spaCy model not available. Using fallback NLP.")
+        nlp = None
 
 # List of words that should never be considered as names
 excluded_names = ["the", "a", "an", "this", "that", "these", "those", 
