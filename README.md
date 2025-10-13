@@ -1,6 +1,6 @@
 # 🗓️ Smart Scheduler AI — Conversational Appointment Scheduler
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-local-orange)](https://smart-scheduler-ai.onrender.com)  
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://smart-scheduler-ai.onrender.com)
 [![Python Version](https://img.shields.io/badge/Python-3.12-blue)](https://python.org)  
 [![Flask](https://img.shields.io/badge/Flask-3.1.2-green)](https://flask.palletsprojects.com)  
 [![spaCy](https://img.shields.io/badge/spaCy-3.8.7-purple)](https://spacy.io)
@@ -29,8 +29,6 @@ A professional, dark-themed web application that demonstrates conversational NLP
 - Date/time parsing: python-dateutil  
 - Frontend: HTML, CSS, Vanilla JavaScript, FullCalendar  
 - Session handling: Flask-Session (session-backed reservations)  
-- Dev / tooling: pytest, black  
-- Optional deployment server: Gunicorn
 
 ---
 
@@ -97,42 +95,12 @@ gunicorn --bind 0.0.0.0:8000 app:app
 
 ---
 
-## Technical highlights (good interview talking points)
+## Technical highlights 
 
 - SpaCy NER combined with custom regex fallbacks for robust, real-world parsing.  
-- Progressive form filling via conversational UX — demonstrates pragmatic product thinking.  
+- Progressive form filling via conversational UX.  
 - Session-based storage for quick demos; easy to upgrade to DB (SQLite/Postgres) for persistence.  
 - Clean separation of concerns: parsing + validation (backend) vs rendering + UX (frontend).  
-- Testability: parsing and overlap checker are straightforward to cover with pytest.
-
----
-
-## Recommended / Missing dependencies
-
-I reviewed your current requirements.txt and suggest adding a few helpful packages for development, CORS, caching and safer production usage. Current file already contains spaCy (and model wheel), dateutil, Flask, Flask-Session, Gunicorn, python-dotenv, pytest, black.
-
-Suggested additions (optional but recommended):
-- Flask-Cors — enable cross-origin requests during development
-- Flask-Caching — cache results (speeds up repeated calendar loads)
-- Flask-Limiter — protect endpoints from excessive use in demos
-- pytz — timezone handling if you plan to support timezones explicitly
-
-Recommended updated requirements (example):
-```text
-spacy==3.8.7
-https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.8.0/en_core_web_md-3.8.0-py3-none-any.whl
-python-dateutil==2.9.0
-flask==3.1.2
-gunicorn==20.1.0
-python-dotenv==1.0.0
-Flask-Session==0.4.0
-Flask-Cors==4.0.0
-Flask-Caching==2.0.0
-Flask-Limiter==2.10.0
-pytz==2024.1
-pytest==7.3.2
-black==24.3.0
-```
 
 ---
 
@@ -149,7 +117,8 @@ black==24.3.0
 
 ## License
 
-This project is suitable to be released under the MIT License. Add a LICENSE file at the repo root if you want to publish.
+This project is licensed under the MIT License — meaning you're free to use, modify, and distribute it with attribution.  
+See [LICENSE](LICENSE) for full terms.
 
 ---
 
