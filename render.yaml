@@ -1,12 +1,11 @@
 services:
   - type: web
-    name: appointment-chatbot
+    name: smart-scheduler-ai
     env: python
     plan: free
     buildCommand: |
-      chmod +x build.sh
-      ./build.sh
       pip install -r requirements.txt
+      python -m spacy download en_core_web_sm
     startCommand: gunicorn app:app
     envVars:
       - key: SECRET_KEY
