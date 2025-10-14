@@ -1,0 +1,57 @@
+# Environment variables
+.env
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs and test reports
+*.log
+*.out
+*.err
+pytest_cache/
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+
+# macOS / Linux / Windows system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Jupyter / Spyder / IPython
+.ipynb_checkpoints/
+.spyproject/
+.pytest_cache/
+
+# Render / deployment cache
+.render/
+*.db
+*.sqlite3
+

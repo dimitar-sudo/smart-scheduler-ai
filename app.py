@@ -8,18 +8,18 @@ from datetime import datetime as dt
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.secret_key = os.getenv('SECRET_KEY')
 
 # Load spaCy model
 try:
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_md")
 except OSError:
     # If model isn't available, try to download it
     try:
         import subprocess
         import sys
-        subprocess.check_call([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
-        nlp = spacy.load("en_core_web_sm")
+        subprocess.check_call([sys.executable, "-m", "spacy", "download", "en_core_web_md"])
+        nlp = spacy.load("en_core_web_md")
     except:
         # Fallback: create a simple NLP function without spaCy
         print("Warning: spaCy model not available. Using fallback NLP.")
