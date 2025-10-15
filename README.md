@@ -11,14 +11,21 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ---
 
+---
+
 ## Features
 
-- **🗣️ Natural-language Booking**: Parse user messages into appointment data (name, date, time).  
-- **📅 FullCalendar Integration**: Events appear on a responsive calendar.  
-- **⚠️ Conflict Detection**: Overlap checking to avoid double-booking.  
-- **🧭 Robust Date/Time Handling**: Uses python-dateutil with multiple parsing fallbacks and heuristics.  
-- **💬 Chat-style UX**: Progressive information requests when details are missing (name/date/time).  
+- **🗣️ Natural-language Booking**: Parse user messages into appointment data.  
+- **📅 FullCalendar Integration**: Display and manage events in an interactive UI.  
+- **⚠️ Conflict Detection**: Automatically detect overlapping bookings.  
+- **🧭 Robust Date/Time Handling**: Uses python-dateutil with multiple parsing fallbacks.  
+- **💬 Conversational UX**: Progressive information requests when details are missing (name/date/time).  
 - **🎨 Polished UI**: Dark theme, responsive layout, accessible components.
+- **🧪 Unit-tested Backend** — Uses pytest and GitHub Actions for automated testing.
+- **🔒 Secure Configuration** — Secrets stored in .env (ignored by Git).  
+- **🚀 One-click Deployment** on Render — Automated build, model download, and startup.
+
+---
 
 ---
 
@@ -29,6 +36,10 @@ A professional, dark-themed web application that demonstrates conversational NLP
 - Date/time parsing: python-dateutil  
 - Frontend: HTML, CSS, Vanilla JavaScript, FullCalendar  
 - Session handling: Flask-Session (session-backed reservations)  
+- Testing: Pytest + GitHub Actions
+- Deployment: Render via render.yaml
+
+---
 
 ---
 
@@ -36,16 +47,25 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ```
 smart-scheduler-ai/
-├── app.py                     # Flask app + NLP parsing & routing
-├── requirements.txt           # Python dependencies (see below)
+├── app.py                          # Flask app + NLP parsing & routing
+├── requirements.txt                # Python dependencies (see below)
+├── render.yaml                     # Render deployment configuration
+├── runtime.txt                     # Python runtime version (for Render)
+├── .env                            # Secret keys
+├── .gitignore                      # Files and folders ignored by git
 ├── templates/
-│   └── index.html             # Main UI template (calendar + chat)
+│   └── index.html                  # Main UI template (calendar + chat)
 ├── static/
-│   ├── style.css              # UI styles (dark theme)
-│   └── script.js              # ReservationChatbot client-side class
-├── README.md                  # This file
-└── LICENSE                    # (optional) MIT license recommended
+│   ├── style.css                   # UI styles (dark theme)
+│   └── script.js                   # ReservationChatbot client-side class
+├── tests/
+│   ├── test_app_routes.py          # Flask routes test
+│   └── test_reservation_logic.py   # Data parsing logic test
+├── README.md                       # This file
+└── LICENSE                         # MIT license 
 ```
+
+---
 
 ---
 
@@ -79,14 +99,45 @@ gunicorn --bind 0.0.0.0:8000 app:app
 
 ---
 
+---
+
+## Testing
+
+# Run all tests for all logic, including NLP parsing, overlap detection, and Flask route
+```bash
+pytest
+```
+
+---
+
+---
+
+## Continuous Integration (CI)
+
+### GitHub Actions automatically:
+
+- **Installs dependencies**
+
+- **Downloads the spaCy model**
+
+- **Runs all unit tests**
+
+- **Reports build status via badge**
+
+### Workflow file: .github/workflows/python-app.yml   
+
+---
+
+---
+
 ## How it works — Key Flows
 
 ### Booking flow
-1. User types a natural-language request (e.g., "Book a meeting with Sarah tomorrow at 3pm").  
-2. Backend (spaCy + heuristics) extracts PERSON, DATE, TIME and normalizes into a reservation object.  
-3. If data is missing, the bot prompts for the missing field(s).  
+1. User types a natural-language request (e.g., "Appointment for Sarah tomorrow at 3pm").  
+2. The backend uses spaCy NLP + regex to extract details.
+3. Missing fields trigger follow-up chatbot messages.
 4. Once complete, the reservation object is stored in session and rendered on FullCalendar.  
-5. Overlap detection prevents double-booking and triggers conflict responses.
+5. Overlap detection prevents double-booking.
 
 ### Main code areas to review
 - app.py — parsing logic (parse_reservation_text), overlap checking (check_overlap), endpoints (/process_reservation, /get_reservations)  
@@ -95,23 +146,31 @@ gunicorn --bind 0.0.0.0:8000 app:app
 
 ---
 
+---
+
 ## Technical highlights 
 
-- SpaCy NER combined with custom regex fallbacks for robust, real-world parsing.  
-- Progressive form filling via conversational UX.  
+- SpaCy NLP combined with custom regex fallbacks for robust, real-world parsing.  
+- Clear separation of concerns (backend parsing vs frontend UX).
 - Session-based storage for quick demos; easy to upgrade to DB (SQLite/Postgres) for persistence.  
-- Clean separation of concerns: parsing + validation (backend) vs rendering + UX (frontend).  
+- Environment variables handled securely.
+- Automated CI/CD pipeline for reliability.
+- Deployable on Render in one click. 
+
+---
 
 ---
 
 ## Future enhancements
 
-- [ ] Persist reservations in a database (SQLite / Postgres) and add user accounts  
+- [ ] Database persistence (SQLite / Postgres)  
 - [ ] Add timezone support and user-localized formatting  
-- [ ] Improve NER via spaCy custom components / rule-based matchers  
-- [ ] Add unit tests around parsing edge cases and overlap detection  
-- [ ] Dockerfile + CI pipeline + Render/Heroku deployment example  
+- [ ] Custom spaCy components for improved date/time detection  
+- [ ] User authentication and profiles 
+- [ ] Dockerfile for containerized deployment 
 - [ ] Export calendar to .ics and calendar invite emails
+
+---
 
 ---
 
@@ -119,6 +178,8 @@ gunicorn --bind 0.0.0.0:8000 app:app
 
 This project is licensed under the MIT License — meaning you're free to use, modify, and distribute it with attribution.  
 See [LICENSE](LICENSE) for full terms.
+
+---
 
 ---
 
