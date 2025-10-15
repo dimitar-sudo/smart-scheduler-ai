@@ -11,7 +11,6 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ---
 
----
 
 ## Features
 
@@ -27,7 +26,6 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ---
 
----
 
 ## Technologies Used
 
@@ -41,7 +39,6 @@ A professional, dark-themed web application that demonstrates conversational NLP
 
 ---
 
----
 
 ## Project Structure
 
@@ -67,7 +64,6 @@ smart-scheduler-ai/
 
 ---
 
----
 
 ## Quickstart (Local)
 
@@ -99,18 +95,16 @@ gunicorn --bind 0.0.0.0:8000 app:app
 
 ---
 
----
 
 ## Testing
 
-# Run all tests for all logic, including NLP parsing, overlap detection, and Flask route
+### Run all tests for all logic, including NLP parsing, overlap detection, and Flask route
 ```bash
 pytest
 ```
 
 ---
 
----
 
 ## Continuous Integration (CI)
 
@@ -128,7 +122,6 @@ pytest
 
 ---
 
----
 
 ## How it works — Key Flows
 
@@ -146,8 +139,6 @@ pytest
 
 ---
 
----
-
 ## Technical highlights 
 
 - SpaCy NLP combined with custom regex fallbacks for robust, real-world parsing.  
@@ -156,8 +147,6 @@ pytest
 - Environment variables handled securely.
 - Automated CI/CD pipeline for reliability.
 - Deployable on Render in one click. 
-
----
 
 ---
 
@@ -172,14 +161,10 @@ pytest
 
 ---
 
----
-
 ## License
 
 This project is licensed under the MIT License — meaning you're free to use, modify, and distribute it with attribution.  
 See [LICENSE](LICENSE) for full terms.
-
----
 
 ---
 
