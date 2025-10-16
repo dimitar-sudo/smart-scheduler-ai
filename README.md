@@ -1,11 +1,14 @@
 # 🗓️ Smart Scheduler AI — Conversational Appointment Scheduler
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://smart-scheduler-ai-demo.onrender.com/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://smart-scheduler-ai-demo.onrender.com)  
 [![Python Version](https://img.shields.io/badge/Python-3.12-blue)](https://python.org)  
 [![Flask](https://img.shields.io/badge/Flask-3.1.2-green)](https://flask.palletsprojects.com)  
 [![spaCy](https://img.shields.io/badge/spaCy-3.8.7-purple)](https://spacy.io)
 
+
 A professional, dark-themed web application that demonstrates conversational NLP-driven scheduling. Users can create appointments via a chat interface; the backend extracts names, dates and times with spaCy and renders events on a FullCalendar UI.
+
+The **live demo** is a **lightweight version** optimized for Render’s free plan — it preserves all core features while using simplified parsing.
 
 ![Smart Scheduler Interface](screenshot.png)
 
